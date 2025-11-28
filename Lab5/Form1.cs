@@ -8,10 +8,10 @@ namespace Lab5
         {
             InitializeComponent();
         }
-        /* Name:
-         * Date: November 2025
+        /* Name: Rory Hughes
+         * Date: November 28, 2025
          * This program rolls one dice or calculates mark stats.
-         * Link to your repo in GitHub: 
+         * Link to your repo in GitHub: https://github.com/Rory-Hughes/ProgLab5
          * */
 
         //class-level random object
@@ -37,6 +37,7 @@ namespace Lab5
         private void btnReset_Click(object sender, EventArgs e)
         {
             //call the function
+            ClearStats();
 
         }
 
@@ -75,6 +76,15 @@ namespace Lab5
         *  Return: nothing
         *  Reset nud to minimum value, chkbox unselected, 
         *  clear labels and listbox */
+        private void ClearStats()
+        {
+            nudNumber.Value = nudNumber.Minimum;
+            chkSeed.Checked = false;
+            lblAverage.ResetText();
+            lblPass.ResetText();
+            lblFail.ResetText();
+            lstMarks.Items.Clear();
+        }
 
 
 
@@ -187,15 +197,44 @@ namespace Lab5
         private void btnGenerate_Click(object sender, EventArgs e)
         {
             //declare variables and array
+            int passCount, failCount;
+            double average;
+            int arraySize = (int)nudNumber.Value;
+            int[] marksArray = new int[arraySize];
 
-            //check if seed value
+            //Check if the seed value is selected
+            if (chkSeed.Checked)
+            {
+                // Reinitialize the static random object using a seed value of 1000
+                // Re-creating the object ensures the sequence repeats exactly.
+                rand = new Random(1000);
+            }
 
-            //fill array using random number
+            //Clear the listbox.
+            lstMarks.Items.Clear();
+
+
+            //fill array using random numbers
+            int i = 0;
+
+            while (i < arraySize)
+            {
+                // Random.Next(minValue, maxValue) returns a random integer 
+                int mark = rand.Next(40, 101);
+
+                marksArray[i] = mark;
+                lstMarks.Items.Add($"{mark}");
+                i++;
+            }
 
             //call CalcStats sending and returning data
-
+            average = CalcStats(marksArray, out passCount, out failCount);
             //display data sent back in labels - average, pass and fail
-            // Format average always showing 2 decimal places 
+            //Format average always showing 2 decimal places 
+            lblAverage.Text = average.ToString("F2");
+            lblPass.Text = passCount.ToString();
+            lblFail.Text = failCount.ToString();
+            
 
         } // end Generate click
 
@@ -206,7 +245,26 @@ namespace Lab5
             ClearOneRoll();
         }
 
-        
+        private void radRollStats_CheckedChanged(object sender, EventArgs e)
+        {
+            grpMarkStats.Show();
+            grpOneRoll.Hide();
+            ClearStats();
+        }
+
+        private void chkSeed_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkSeed.Checked)
+            {
+                DialogResult result = MessageBox.Show("Are you sure you want a seed value?", "Confirm Seed Value", MessageBoxButtons.YesNo);
+                if (result == DialogResult.No)
+                {
+                    chkSeed.Checked = false;
+                }
+            }
+        }
+
+
         /* Name: CalcStats
         * Sent: array and 2 integers
         * Return: average (double) 
@@ -214,5 +272,24 @@ namespace Lab5
         * Passmark is 60%
         * Calculate average and count how many marks pass and fail
         * The pass and fail values must also get returned for display*/
+        private double CalcStats(int[] marksArray, out int passCount, out int failCount)
+        {
+            double total = 0;
+            passCount = 0;
+            failCount = 0;
+            foreach (int mark in marksArray)
+            {
+                total += mark;
+                if (mark >= 60)
+                {
+                    passCount++;
+                }
+                else
+                {
+                    failCount++;
+                }
+            }
+            return total / (double)marksArray.Length;
+        }
     }
 }

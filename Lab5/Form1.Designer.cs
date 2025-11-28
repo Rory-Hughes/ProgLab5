@@ -207,6 +207,7 @@
             radRollStats.TabStop = true;
             radRollStats.Text = "Mark Stats";
             radRollStats.UseVisualStyleBackColor = true;
+            radRollStats.CheckedChanged += radRollStats_CheckedChanged;
             // 
             // grpMarkStats
             // 
@@ -331,6 +332,7 @@
             chkSeed.TabIndex = 2;
             chkSeed.Text = "Seed Value";
             chkSeed.UseVisualStyleBackColor = true;
+            chkSeed.CheckedChanged += chkSeed_CheckedChanged;
             // 
             // label3
             // 
