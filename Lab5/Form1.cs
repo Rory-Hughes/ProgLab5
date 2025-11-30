@@ -92,7 +92,7 @@ namespace Lab5
         * Sent: nothing
         * Return: integer (1-6)
         * Simulates rolling one dice */
-        public int RollDice()
+        private int RollDice()
         {
             return rand.Next(1, 7);
         }
@@ -111,7 +111,7 @@ namespace Lab5
         *        11 = Yo-leven
         *        12 = Boxcars
         * Anything else = No special name*/
-        public string GetName(int total)
+        private string GetName(int total)
         {
             string name;
             switch (total)
@@ -172,7 +172,7 @@ namespace Lab5
         * Sent: string
         * Return: bool (true if data, false if not) 
         * See if string is empty or not*/
-        public bool DataPresent(string s)
+        private bool DataPresent(string s)
         {
             return !string.IsNullOrWhiteSpace(s);
         }
@@ -182,7 +182,7 @@ namespace Lab5
         * Sent: 2 strings
         * Return: none 
         * Swaps the memory locations of two strings*/
-        public void SwapData(ref string roll1, ref string roll2)
+        private void SwapData(ref string roll1, ref string roll2)
         {
             //Use a temporary variable to hold the value of the first string.
             string temp = roll1;
